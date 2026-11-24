@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+<rect x="0" y="0" width="1280" height="800" fill="#ffffff"/>
+<text x="48" y="62" font-family="Source Sans Pro, Arial, sans-serif" font-size="30" fill="#222222" text-anchor="start">Institut Virtual</text>
+<line x1="48" y1="80" x2="1232" y2="80" stroke="#222222" stroke-width="2"/>
+<rect x="230" y="150" width="820" height="500" rx="4" fill="none" stroke="#222222" stroke-width="2"/>
+<text x="270" y="205" font-family="Source Sans Pro, Arial, sans-serif" font-size="28" fill="#222222" text-anchor="start">Entrar</text>
+<text x="270" y="250" font-family="Source Sans Pro, Arial, sans-serif" font-size="20" fill="#222222" text-anchor="start">Nombre</text>
+<rect x="270" y="262" width="380" height="44" rx="4" fill="#ffffff" stroke="#222222" stroke-width="2"/>
+<text x="270" y="345" font-family="Source Sans Pro, Arial, sans-serif" font-size="20" fill="#222222" text-anchor="start">Rol:</text>
+<circle cx="330" cy="338" r="9" fill="none" stroke="#222222" stroke-width="2"/>
+<text x="346" y="345" font-family="Source Sans Pro, Arial, sans-serif" font-size="20" fill="#222222" text-anchor="start">Alumno</text>
+<circle cx="450" cy="338" r="9" fill="none" stroke="#222222" stroke-width="2"/>
+<text x="466" y="345" font-family="Source Sans Pro, Arial, sans-serif" font-size="20" fill="#222222" text-anchor="start">Profesor</text>
+<text x="270" y="395" font-family="Source Sans Pro, Arial, sans-serif" font-size="20" fill="#222222" text-anchor="start">Avatar</text>
+<circle cx="297" cy="440" r="25" fill="none" stroke="#222222" stroke-width="2"/>
+<circle cx="363" cy="440" r="25" fill="none" stroke="#222222" stroke-width="2"/>
+<circle cx="429" cy="440" r="25" fill="none" stroke="#222222" stroke-width="2"/>
+<circle cx="495" cy="440" r="25" fill="none" stroke="#222222" stroke-width="2"/>
+<rect x="700" y="190" width="310" height="200" rx="4" fill="none" stroke="#222222" stroke-width="2"/>
+<line x1="700" y1="190" x2="1010" y2="390" stroke="#bbbbbb" stroke-width="1"/>
+<line x1="1010" y1="190" x2="700" y2="390" stroke="#bbbbbb" stroke-width="1"/>
+<rect x="708" y="356" width="76" height="26" rx="4" fill="#ffffff" stroke="#222222" stroke-width="0"/>
+<text x="716" y="375" font-family="Source Sans Pro, Arial, sans-serif" font-size="18" fill="#222222" text-anchor="start">cámara</text>
+<rect x="700" y="405" width="150" height="44" rx="4" fill="#ffffff" stroke="#222222" stroke-width="2"/>
+<text x="775.0" y="434.0" font-family="Source Sans Pro, Arial, sans-serif" font-size="19" fill="#222222" text-anchor="middle">micro</text>
+<rect x="860" y="405" width="150" height="44" rx="4" fill="#ffffff" stroke="#222222" stroke-width="2"/>
+<text x="935.0" y="434.0" font-family="Source Sans Pro, Arial, sans-serif" font-size="19" fill="#222222" text-anchor="middle">cámara</text>
+<text x="700" y="480" font-family="Source Sans Pro, Arial, sans-serif" font-size="17" fill="#555555" text-anchor="start">* si no das permiso entras sin cámara</text>
+<rect x="700" y="510" width="310" height="48" rx="4" fill="#222222" stroke="#222222" stroke-width="2"/>
+<text x="855.0" y="541.0" font-family="Source Sans Pro, Arial, sans-serif" font-size="19" fill="#ffffff" text-anchor="middle">Entrar</text>
+</svg>
