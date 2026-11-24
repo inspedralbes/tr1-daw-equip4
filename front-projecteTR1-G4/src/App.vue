@@ -1,6 +1,7 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import CmpCreacionUsuario from './components/cmpCreacionUsuario.vue';
+
+
 </script>
 
 <template>
@@ -11,8 +12,7 @@ import HelloWorld from './components/HelloWorld.vue'
       <HelloWorld msg="You did it!" />
 
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <CmpCreacionUsuario />
       </nav>
     </div>
   </header>
