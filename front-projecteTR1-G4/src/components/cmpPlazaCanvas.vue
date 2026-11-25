@@ -13,10 +13,20 @@ onMounted(function muntarJoc() {
         parent: contenidorJoc.value,
         scene: {
             preload: function carregarRecursos() {
-                this.load.image('avatarJugador', '/avatars/noi_pell_clara.png');
+                this.load.image("avatarJugador", "/avatars/noi_pell_clara.png");
+                this.load.image("tilesetSala", "/assets/maps/tileset_sala.png");
+                this.load.tilemapTiledJSON("mapaSala", "/assets/maps/sala.json");
             },
             create: function crearEscena() {
-                this.personatge = this.add.image(200, 150, 'avatarJugador');
+                const mapaSala = this.make.tilemap({ key: "mapaSala" });
+                const tilesetSala = mapaSala.addTilesetImage("sala", "tilesetSala");
+
+                mapaSala.createLayer("Suelo", tilesetSala, 0, 0);
+                mapaSala.createLayer("Unirse_sala", tilesetSala, 0, 0);
+                mapaSala.createLayer("Crear_sala", tilesetSala, 0, 0);
+                mapaSala.createLayer("Paredes", tilesetSala, 0, 0);
+
+                this.personatge = this.add.image(200, 150, "avatarJugador");
                 this.teclesMoviment = this.input.keyboard.createCursorKeys();
             },
             update: function actualitzarEscena() {
