@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
+import { socket } from '@/services/socket';
 
 const router = useRouter();
 
@@ -64,7 +65,24 @@ function enviarRegistro() {
         return;
     }
 
-    router.push('/lobby');
+    socket.connect();
+
+    socket.emit('registrar-usuari', {
+        nombre: nombre.value,
+        rol: rol.value,
+        avatar: avatar.value
+    });
+
+    socket.once('resultado-registre', (resultado) => {
+
+        if (resultado.correcto) {
+            router.push('/lobby');
+        } else {
+            alert(resultado.mensaje);
+        }
+
+    });
+
 }
 
 // Aturem la càmera quan sortim de la pàgina
