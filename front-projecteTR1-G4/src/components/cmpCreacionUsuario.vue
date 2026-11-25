@@ -2,6 +2,7 @@
 import { ref, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { socket } from '@/services/socket';
+import Swal from 'sweetalert2';
 
 const router = useRouter();
 
@@ -22,6 +23,17 @@ let avatars = [
 ];
 
 // --------------- FUNCIONS --------------
+
+function alertaError(mensaje){
+
+    Swal.fire({
+        title: 'Error',
+        text: mensaje,
+        icon: 'error',
+        confirmButtonText: 'Entendido'
+    });
+}
+
 
 async function desactivar_ActivarMicro() {
     micro.value = !micro.value;
@@ -53,32 +65,48 @@ async function desactivar_ActivarCamara() {
 
         } catch (error) {
             console.error('Error en accedir a la càmera:', error);
-            alert('No s\'ha pogut accedir a la càmera.');
+            alertaError('No s\'ha pogut accedir a la càmera.');
         }
     }
 }
 
-function enviarRegistro() {
+async function enviarRegistro() {
 
-    if (nombre.value.trim() === '' || rol.value === '' || avatar.value === '') {
-        alert('Completa el nom, el rol i selecciona un avatar.');
+    if (nombre.value.trim().length < 2) {
+        alertaError('El teu nom ha de tenir mínim 2 caràcters.');
         return;
     }
 
-    socket.connect();
+    if (rol.value === '') {
+        alertaError('Selecciona el teu rol.');
+        return;
+    }
 
+    if (avatar.value === '') {
+        alertaError('Selecciona un avatar.');
+        return;
+    }
+
+    // Esperar a la conexión
+    if (!socket.connected) {
+        await new Promise(resolve => socket.once('connect', resolve));
+        socket.connect();
+    }
+
+    // Enviar registro
     socket.emit('registrar-usuari', {
         nombre: nombre.value,
         rol: rol.value,
         avatar: avatar.value
     });
 
+    // Esperar respuesta
     socket.once('resultado-registre', (resultado) => {
 
         if (resultado.correcto) {
             router.push('/lobby');
         } else {
-            alert(resultado.mensaje);
+            alertaError(resultado.mensaje);
         }
 
     });
