@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="720" viewBox="0 0 1100 720">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker>
+    <style>
+      .title{font: bold 30px Arial,sans-serif; fill:#172554}
+      .subtitle{font: 16px Arial,sans-serif; fill:#475569}
+      .box-title{font:bold 22px Arial,sans-serif; fill:#0f172a}
+      .box-text{font:17px Arial,sans-serif; fill:#334155}
+      .label{font:bold 16px Arial,sans-serif; fill:#1e293b}
+      .note{font:15px Arial,sans-serif; fill:#475569}
+      .box{fill:#f8fafc;stroke:#64748b;stroke-width:2;rx:16}
+      .line{stroke:#334155;stroke-width:2.5;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1100" height="720" fill="#ffffff"/>
+  <text x="550" y="48" text-anchor="middle" class="title">Diagrama del sistema — Pixel Plaza</text>
+  <text x="550" y="76" text-anchor="middle" class="subtitle">Arquitectura general de l'aplicació</text>
+
+  <rect x="390" y="105" width="320" height="70" class="box"/>
+  <text x="550" y="147" text-anchor="middle" class="box-title">Docker Compose</text>
+
+  <path d="M550 175 V205 H275 V235" class="line"/>
+  <path d="M550 205 H825 V235" class="line"/>
+
+  <rect x="95" y="235" width="360" height="165" class="box"/>
+  <text x="275" y="273" text-anchor="middle" class="box-title">Frontend</text>
+  <text x="275" y="310" text-anchor="middle" class="box-text">Vue 3 + Phaser</text>
+  <text x="275" y="340" text-anchor="middle" class="box-text">Pinia</text>
+  <text x="275" y="375" text-anchor="middle" class="note">Interfície i mapa virtual</text>
+
+  <rect x="645" y="235" width="360" height="165" class="box"/>
+  <text x="825" y="273" text-anchor="middle" class="box-title">Backend</text>
+  <text x="825" y="310" text-anchor="middle" class="box-text">Node.js + Socket.IO</text>
+  <text x="825" y="340" text-anchor="middle" class="box-text">Gestiona usuaris i sales</text>
+  <text x="825" y="375" text-anchor="middle" class="note">Gestiona la senyalització WebRTC</text>
+
+  <!-- Bidirectional Socket.IO connection -->
+  <path d="M455 300 H645" stroke="#334155" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M645 325 H455" stroke="#334155" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <rect x="486" y="286" width="128" height="48" rx="8" fill="#ffffff"/>
+  <text x="550" y="305" text-anchor="middle" class="label">Socket.IO</text>
+  <text x="550" y="324" text-anchor="middle" class="note">Bidireccional</text>
+
+  <path d="M275 400 V450" class="line"/>
+  <rect x="95" y="450" width="360" height="105" class="box"/>
+  <text x="275" y="490" text-anchor="middle" class="box-title">Usuaris / navegadors</text>
+  <text x="275" y="523" text-anchor="middle" class="box-text">Executen el frontend</text>
+
+  <path d="M455 502 H645" class="line"/>
+  <text x="550" y="485" text-anchor="middle" class="label">WebRTC</text>
+  <text x="550" y="530" text-anchor="middle" class="note">Àudio i vídeo entre usuaris</text>
+
+  <rect x="645" y="450" width="360" height="105" class="box"/>
+  <text x="825" y="490" text-anchor="middle" class="box-title">Altres usuaris</text>
+  <text x="825" y="523" text-anchor="middle" class="box-text">Connexió d'àudio i vídeo</text>
+
+  <text x="550" y="625" text-anchor="middle" class="note">Socket.IO intercanvia missatges i senyalització; WebRTC transmet l'àudio i el vídeo.</text>
+</svg>
