@@ -46,7 +46,7 @@ export const useDispositivosStore = defineStore('dispositivos', () => {
             track.enabled = micro.value;
         });
     }
-}no
+}
 
     return {
         camara,
