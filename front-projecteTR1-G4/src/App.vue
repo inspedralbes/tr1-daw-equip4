@@ -8,7 +8,6 @@ import cmpChatGeneral from './components/cmpChatGeneral.vue';
     <div class="wrapper">
       <nav>
         <RouterView />
-        <cmpChatGeneral />
       </nav>
     </div>
   </header>

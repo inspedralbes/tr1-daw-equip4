@@ -89,8 +89,8 @@ async function enviarRegistro() {
 
     // Esperar a la conexión
     if (!socket.connected) {
-        await new Promise(resolve => socket.once('connect', resolve));
         socket.connect();
+        await new Promise(resolve => socket.once('connect', resolve));
     }
 
     // Enviar registro

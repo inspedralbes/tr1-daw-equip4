@@ -47,7 +47,7 @@ onUnmounted(() => {
 <style scoped>
 .xat {
     width: 300px;
-    border: 1px solid #ccc;
+    border: 2px solid #6475d9;
     border-radius: 10px;
     padding: 10px;
 }
