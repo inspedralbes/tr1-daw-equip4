@@ -1,10 +1,12 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import Phaser from "phaser";
+import { Personatge } from "../phaser/Personatge.js";
 
 const contenidorJoc = ref(null);
 let jocPhaser = null;
 
+// Crea el joc quan Vue ja ha afegit el contenidor al DOM.
 onMounted(function muntarJoc() {
     jocPhaser = new Phaser.Game({
         type: Phaser.AUTO,
@@ -13,11 +15,13 @@ onMounted(function muntarJoc() {
         pixelArt: true,
         parent: contenidorJoc.value,
         scene: {
+            // Carrega les imatges i el mapa abans de crear l'escena.
             preload: function carregarRecursos() {
                 this.load.image("avatarJugador", "/avatars/noi_pell_clara.png");
                 this.load.image("tilesetSala", "/assets/maps/tileset_sala.png");
                 this.load.tilemapTiledJSON("mapaSala", "/assets/maps/sala.json");
             },
+            // Construeix el mapa, ajusta la càmera i crea el personatge.
             create: function crearEscena() {
                 const mapaSala = this.make.tilemap({ key: "mapaSala" });
                 const tilesetSala = mapaSala.addTilesetImage("sala", "tilesetSala");
@@ -38,30 +42,17 @@ onMounted(function muntarJoc() {
                     mapaSala.heightInPixels / 2
                 );
 
-                this.personatge = this.add.image(200, 150, "avatarJugador");
-                this.teclesMoviment = this.input.keyboard.createCursorKeys();
+                this.personatge = new Personatge(this, 200, 150, "avatarJugador");
             },
-            update: function actualitzarEscena() {
-                if (this.teclesMoviment.left.isDown) {
-                    this.personatge.x -= 3;
-                }
-
-                if (this.teclesMoviment.right.isDown) {
-                    this.personatge.x += 3;
-                }
-
-                if (this.teclesMoviment.up.isDown) {
-                    this.personatge.y -= 3;
-                }
-
-                if (this.teclesMoviment.down.isDown) {
-                    this.personatge.y += 3;
-                }
+            // Phaser crida aquesta funció cada fotograma i li passa el temps transcorregut.
+            update: function actualitzarEscena(temps, delta) {
+                this.personatge.actualitzar(delta);
             },
         },
     });
 });
 
+// Destrueix Phaser en sortir del component per alliberar el canvas i els recursos.
 onBeforeUnmount(function destruirJoc() {
     if (jocPhaser !== null) {
         jocPhaser.destroy(true);
