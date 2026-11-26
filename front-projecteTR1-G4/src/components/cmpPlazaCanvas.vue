@@ -14,10 +14,37 @@ onMounted(function muntarJoc() {
         height: 600,
         pixelArt: true,
         parent: contenidorJoc.value,
+        physics: {
+            default: "arcade",
+            arcade: {
+                gravity: { y: 0 },
+                fps: 60,
+                debug: false
+            }
+        },
         scene: {
-            // Carrega les imatges i el mapa abans de crear l'escena.
+            // Carrega els spritesheets i el mapa abans de crear l'escena.
             preload: function carregarRecursos() {
-                this.load.image("avatarJugador", "/avatars/noi_pell_clara.png");
+                this.load.spritesheet(
+                    "chicoClaro",
+                    "/assets/sprites/chico_claro.png",
+                    { frameWidth: 64, frameHeight: 64 }
+                );
+                this.load.spritesheet(
+                    "chicoOscuro",
+                    "/assets/sprites/chico_oscuro.png",
+                    { frameWidth: 64, frameHeight: 64 }
+                );
+                this.load.spritesheet(
+                    "chicaClara",
+                    "/assets/sprites/chica_clara.png",
+                    { frameWidth: 64, frameHeight: 64 }
+                );
+                this.load.spritesheet(
+                    "chicaOscura",
+                    "/assets/sprites/chica_oscura.png",
+                    { frameWidth: 64, frameHeight: 64 }
+                );
                 this.load.image("tilesetSala", "/assets/maps/tileset_sala.png");
                 this.load.tilemapTiledJSON("mapaSala", "/assets/maps/sala.json");
             },
@@ -42,11 +69,11 @@ onMounted(function muntarJoc() {
                     mapaSala.heightInPixels / 2
                 );
 
-                this.personatge = new Personatge(this, 200, 150, "avatarJugador");
+                this.personatge = new Personatge(this, 200, 150, "chicoClaro");
             },
-            // Phaser crida aquesta funció cada fotograma i li passa el temps transcorregut.
-            update: function actualitzarEscena(temps, delta) {
-                this.personatge.actualitzar(delta);
+            // Phaser actualitza el moviment i la direcció del personatge cada fotograma.
+            update: function actualitzarEscena() {
+                this.personatge.actualitzar();
             },
         },
     });
