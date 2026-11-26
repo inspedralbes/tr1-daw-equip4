@@ -1,4 +1,7 @@
 {
+  "overrides": {
+    "minimatch": "^11.0.1"
+  },
   "type": "module",
   "dependencies": {
     "cors": "^2.8.6",
