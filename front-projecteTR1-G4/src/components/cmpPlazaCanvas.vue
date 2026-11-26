@@ -10,6 +10,7 @@ onMounted(function muntarJoc() {
         type: Phaser.AUTO,
         width: 800,
         height: 600,
+        pixelArt: true,
         parent: contenidorJoc.value,
         scene: {
             preload: function carregarRecursos() {
@@ -25,6 +26,17 @@ onMounted(function muntarJoc() {
                 mapaSala.createLayer("Unirse_sala", tilesetSala, 0, 0);
                 mapaSala.createLayer("Crear_sala", tilesetSala, 0, 0);
                 mapaSala.createLayer("Paredes", tilesetSala, 0, 0);
+
+                const zoomMapa = Math.min(
+                    this.scale.width / mapaSala.widthInPixels,
+                    this.scale.height / mapaSala.heightInPixels
+                );
+
+                this.cameras.main.setZoom(zoomMapa);
+                this.cameras.main.centerOn(
+                    mapaSala.widthInPixels / 2,
+                    mapaSala.heightInPixels / 2
+                );
 
                 this.personatge = this.add.image(200, 150, "avatarJugador");
                 this.teclesMoviment = this.input.keyboard.createCursorKeys();
