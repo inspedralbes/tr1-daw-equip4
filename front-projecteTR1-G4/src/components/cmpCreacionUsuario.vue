@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeUnmount } from 'vue';
+import { ref, computed, watch, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { socket } from '@/services/socket';
 
@@ -10,16 +10,34 @@ let rol = ref('');
 let avatar = ref('');
 let camara = ref(false);
 let micro = ref(true);
+let codiProfe = ref('');
 
 let video = ref(null);
 let stream = null;
 
-let avatars = [
+let avatarsAlumnes = [
     { nom: 'noi_pell_clara', imatge: '/avatars/noi_pell_clara.png' },
     { nom: 'noi_pell_fosca', imatge: '/avatars/noi_pell_fosca.png' },
     { nom: 'noia_pell_clara', imatge: '/avatars/noia_pell_clara.png' },
     { nom: 'noia_pell_fosca', imatge: '/avatars/noia_pell_fosca.png' }
 ];
+
+let avatarsProfes = [
+    { nom: 'profe_barba', imatge: '/avatars/profe_barba.png' },
+    { nom: 'profe_polo_blau', imatge: '/avatars/profe_polo_blau.png' },
+    { nom: 'profe_cabell_gris', imatge: '/avatars/profe_cabell_gris.png' }
+];
+
+let avatars = computed(() => {
+    if (rol.value === 'Profesor') return avatarsProfes;
+    if (rol.value === 'Alumno') return avatarsAlumnes;
+    return [];
+});
+
+watch(rol, () => {
+    avatar.value = '';
+    codiProfe.value = '';
+});
 
 // --------------- FUNCIONS --------------
 
@@ -64,13 +82,18 @@ function enviarRegistro() {
         alert('Completa el nom, el rol i selecciona un avatar.');
         return;
     }
+    if (rol.value === 'Profesor' && codiProfe.value.trim() === '') {
+        alert('Introdueix el codi de professor.');
+        return;
+    }
 
     socket.connect();
 
     socket.emit('registrar-usuari', {
         nombre: nombre.value,
         rol: rol.value,
-        avatar: avatar.value
+        avatar: avatar.value,
+        codi: codiProfe.value
     });
 
     socket.once('resultado-registre', (resultado) => {
@@ -138,6 +161,19 @@ onBeforeUnmount(() => {
 
                 </div>
 
+                <div class="camp" v-if="rol === 'Profesor'">
+
+                    <label for="codi">Codi de Professorat</label>
+                    
+                    <input
+                        type="password"
+                        placeholder="Introdueix el codi..."
+                        id="codi"
+                        v-model="codiProfe"
+                    >
+
+                </div>
+                
                 <!-- AVATARS -->
                 <div class="camp">
 
