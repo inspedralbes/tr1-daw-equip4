@@ -4,6 +4,7 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import { configurarSockets } from './sockets/userSocket.js';
 import { configurarChat } from './sockets/chatSocket.js';
+import { configurarSales } from './sockets/salaSockets.js';
 
 // Crear servidor Express
 const app = express();
@@ -28,7 +29,8 @@ const io = new Server(servidor, {
 
 configurarSockets(io);
 configurarChat(io);
-
+configurarSales(io)
+    ;
 // Comprobar que el backend funciona
 app.get('/health', (req, res) => {
     res.json({

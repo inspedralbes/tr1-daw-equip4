@@ -12,7 +12,10 @@ const texturesAvatar = {
     noi_pell_clara: "chicoClaro",
     noi_pell_fosca: "chicoOscuro",
     noia_pell_clara: "chicaClara",
-    noia_pell_fosca: "chicaOscura"
+    noia_pell_fosca: "chicaOscura",
+    profe_barba: "profeBarba",
+    profe_polo_blau: "profePoloblau",
+    profe_cabell_gris: "profeCabellGris"
 };
 
 // Crea el meu personatge i el dels altres, i esborra els que han marxat
@@ -92,6 +95,9 @@ onMounted(function muntarJoc() {
                 this.load.spritesheet("chicoOscuro", "/assets/sprites/chico_oscuro.png", { frameWidth: 64, frameHeight: 64 });
                 this.load.spritesheet("chicaClara", "/assets/sprites/chica_clara.png", { frameWidth: 64, frameHeight: 64 });
                 this.load.spritesheet("chicaOscura", "/assets/sprites/chica_oscura.png", { frameWidth: 64, frameHeight: 64 });
+                this.load.spritesheet("profeBarba", "/assets/sprites/profe_barba.png", { frameWidth: 64, frameHeight: 64 });
+                this.load.spritesheet("profePoloBlau", "/assets/sprites/profe_polo_blau.png", { frameWidth: 64, frameHeight: 64 });
+                this.load.spritesheet("profeCabellGris", "/assets/sprites/profe_cabell_gris.png", { frameWidth: 64, frameHeight: 64 });
                 this.load.image("tilesetSala", "/assets/maps/tileset_sala.png");
                 this.load.tilemapTiledJSON("mapaSala", "/assets/maps/sala.json");
             },

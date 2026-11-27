@@ -1,3 +1,4 @@
+import { salaDeUsuari } from '../managers/salaManager.js';
 import {
     registrarUsuario,
     eliminarUsuario,
@@ -46,8 +47,9 @@ export function configurarSockets(io) {
         // Un usuario se ha movido: se avisa al resto
         socket.on('moure', (dades) => {
             const usuario = moureUsuario(socket.id, dades);
-            if (usuario) {
-                socket.broadcast.emit('usuari-mogut', usuario);
+            const sala = salaDeUsuari(socket.id);
+            if (usuario && sala) {
+                socket.to(sala.id).emit('usuari-mogut', usuario);
             }
         });
 
