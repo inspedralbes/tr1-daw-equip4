@@ -79,11 +79,11 @@ function desactivar_ActivarMicro() {
 async function enviarRegistro() {
 
     if (nombre.value.trim() === '' || rol.value === '' || avatar.value === '') {
-        alert('Completa el nom, el rol i selecciona un avatar.');
+        alertaError('Completa el nom, el rol i selecciona un avatar.');
         return;
     }
     if (rol.value === 'Profesor' && codiProfe.value.trim() === '') {
-        alert('Introdueix el codi de professor.');
+        alertaError('Introdueix el codi de professor.');
         return;
     }
 
