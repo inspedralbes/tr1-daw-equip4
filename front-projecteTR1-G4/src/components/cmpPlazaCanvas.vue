@@ -5,6 +5,7 @@ import { Personatge } from "../phaser/Personatge.js";
 import { socket } from "@/services/socket";
 
 const contenidorJoc = ref(null);
+const emit = defineEmits(["accio"]);
 let jocPhaser = null;
 
 // Avatar del registre -> textura de Phaser
@@ -23,6 +24,7 @@ function actualitzarJugadors(escena, usuaris) {
         if (usuari.id === socket.id) {
             if (!escena.personatge) {
                 escena.personatge = new Personatge(escena, usuari.x, usuari.y, textura);
+                escena.physics.add.collider(escena.personatge.sprite, escena.capaParedes);
                 escena.etiquetes[usuari.id] = crearEtiqueta(escena, usuari);
             }
         } else if (!escena.altresJugadors[usuari.id]) {
@@ -103,7 +105,9 @@ onMounted(function muntarJoc() {
                 mapaSala.createLayer("Suelo", tilesetSala, 0, 0);
                 mapaSala.createLayer("Unirse_sala", tilesetSala, 0, 0);
                 mapaSala.createLayer("Crear_sala", tilesetSala, 0, 0);
-                mapaSala.createLayer("Paredes", tilesetSala, 0, 0);
+                const capaParedes = mapaSala.createLayer("Paredes", tilesetSala, 0, 0);
+                capaParedes.setCollisionByExclusion([-1]);
+                this.capaParedes = capaParedes;
 
                 const zoomMapa = Math.min(
                     this.scale.width / mapaSala.widthInPixels,
@@ -111,19 +115,40 @@ onMounted(function muntarJoc() {
                 );
 
                 this.cameras.main.setZoom(zoomMapa);
-                this.cameras.main.centerOn(mapaSala.widthInPixels / 2, mapaSala.heightInPixels / 2);
-
+                this.cameras.main.centerOn(
+                    mapaSala.widthInPixels / 2,
+                    mapaSala.heightInPixels / 2
+                );
                 this.personatge = null;
                 this.altresJugadors = {};
                 this.etiquetes = {};
                 this.estavaEnMoviment = false;
+
+                const objectes = mapaSala.getObjectLayer("Interacciones").objects;
+                const escena = this;
+
+                objectes.forEach(function (objecte) {
+                    if (objecte.name !== "crear_sala" && objecte.name !== "unirse_sala") return;
+
+                    const zona = escena.add.zone(
+                        objecte.x + objecte.width / 2,
+                        objecte.y + objecte.height / 2,
+                        objecte.width,
+                        objecte.height
+                    );
+
+                    zona.setInteractive();
+                    zona.on("pointerdown", function () {
+                        emit("accio", objecte.name);
+                    });
+                });
 
                 // Llista de jugadors i moviment dels altres
                 socket.on("llista-usuaris", (usuaris) => actualitzarJugadors(this, usuaris));
                 socket.on("usuari-mogut", (usuari) => moureAltreJugador(this, usuari));
                 socket.emit("demanar-usuaris");
             },
-
+            // Phaser actualitza el moviment i la direcció del personatge cada fotograma.
             update: function actualitzarEscena() {
                 if (!this.personatge) return;
 
