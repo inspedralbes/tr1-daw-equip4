@@ -1,6 +1,7 @@
 <script setup>
 import cmpPlazaCanvas from '@/components/cmpPlazaCanvas.vue';
 import cmpChatGeneral from '@/components/cmpChatGeneral.vue';
+import VideoCall from '@/components/VideoCall.vue';
 </script>
 
 <template>
@@ -11,6 +12,8 @@ import cmpChatGeneral from '@/components/cmpChatGeneral.vue';
             <cmpPlazaCanvas />
             <cmpChatGeneral />
         </div>
+
+        <VideoCall />
     </main>
 </template>
 

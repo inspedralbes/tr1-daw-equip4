@@ -10,6 +10,11 @@ export function configurarSockets(io) {
 
         console.log('Usuario conectado:', socket.id);
 
+        // Enviar lista de usuarios conectados
+        socket.on('obtenir-usuaris', () => {
+            socket.emit('llista-usuaris', obtenerUsuarios());
+        });
+
         // Registrar usuario
         socket.on('registrar-usuari', (datos) => {
 
@@ -28,10 +33,10 @@ export function configurarSockets(io) {
 
         // Desconectar usuario
         socket.on('disconnect', () => {
-        
-        eliminarUsuario(socket.id);
 
-        io.emit('llista-usuaris', obtenerUsuarios());
+            eliminarUsuario(socket.id);
+
+            io.emit('llista-usuaris', obtenerUsuarios());
 
             console.log('Usuario desconectado:', socket.id);
 
