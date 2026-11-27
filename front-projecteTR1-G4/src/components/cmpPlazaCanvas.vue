@@ -56,7 +56,8 @@ onMounted(function muntarJoc() {
                 mapaSala.createLayer("Suelo", tilesetSala, 0, 0);
                 mapaSala.createLayer("Unirse_sala", tilesetSala, 0, 0);
                 mapaSala.createLayer("Crear_sala", tilesetSala, 0, 0);
-                mapaSala.createLayer("Paredes", tilesetSala, 0, 0);
+                const capaParedes = mapaSala.createLayer("Paredes", tilesetSala, 0, 0);
+                capaParedes.setCollisionByExclusion([-1]);
 
                 const zoomMapa = Math.min(
                     this.scale.width / mapaSala.widthInPixels,
@@ -69,7 +70,13 @@ onMounted(function muntarJoc() {
                     mapaSala.heightInPixels / 2
                 );
 
-                this.personatge = new Personatge(this, 200, 150, "chicoClaro");
+                this.personatge = new Personatge(
+                    this,
+                    mapaSala.widthInPixels / 2,
+                    mapaSala.heightInPixels / 2,
+                    "chicoClaro"
+                );
+                this.physics.add.collider(this.personatge.sprite, capaParedes);
             },
             // Phaser actualitza el moviment i la direcció del personatge cada fotograma.
             update: function actualitzarEscena() {
