@@ -2,8 +2,12 @@
 import { ref, computed, watch, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { socket } from '@/services/socket';
+import Swal from 'sweetalert2';
+import { useDispositivosStore } from '@/stores/dispositivosStore';
+
 
 const router = useRouter();
+const dispositivos = useDispositivosStore();
 
 let nombre = ref('');
 let rol = ref('');
@@ -13,7 +17,7 @@ let micro = ref(true);
 let codiProfe = ref('');
 
 let video = ref(null);
-let stream = null;
+
 
 let avatarsAlumnes = [
     { nom: 'noi_pell_clara', imatge: '/avatars/noi_pell_clara.png' },
@@ -41,42 +45,38 @@ watch(rol, () => {
 
 // --------------- FUNCIONS --------------
 
-async function desactivar_ActivarMicro() {
-    micro.value = !micro.value;
+function alertaError(mensaje){
+
+    Swal.fire({
+        title: 'Error',
+        text: mensaje,
+        icon: 'error',
+        confirmButtonText: 'Entendido'
+    });
 }
 
+
 async function desactivar_ActivarCamara() {
+    try {
+        await dispositivos.activarDesactivarCamara();
 
-    if (camara.value) {
-
-        // Apaguem la càmera
-        if (stream) {
-            stream.getTracks().forEach(track => track.stop());
-            stream = null;
+        if (dispositivos.camara) {
+            video.value.srcObject = dispositivos.stream;
+        } else {
+            video.value.srcObject = null;
         }
 
-        camara.value = false;
-
-    } else {
-
-        // Encenem la càmera
-        try {
-            stream = await navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: false
-            });
-
-            video.value.srcObject = stream;
-            camara.value = true;
-
-        } catch (error) {
-            console.error('Error en accedir a la càmera:', error);
-            alert('No s\'ha pogut accedir a la càmera.');
-        }
+    } catch (error) {
+        alertaError('No s\'ha pogut accedir a la càmera.');
     }
 }
 
-function enviarRegistro() {
+function desactivar_ActivarMicro() {
+    dispositivos.activarDesactivarMicro();
+}
+
+
+async function enviarRegistro() {
 
     if (nombre.value.trim() === '' || rol.value === '' || avatar.value === '') {
         alert('Completa el nom, el rol i selecciona un avatar.');
@@ -87,8 +87,13 @@ function enviarRegistro() {
         return;
     }
 
-    socket.connect();
+    // Esperar a la conexión
+    if (!socket.connected) {
+        socket.connect();
+        await new Promise(resolve => socket.once('connect', resolve));
+    }
 
+    // Enviar registro
     socket.emit('registrar-usuari', {
         nombre: nombre.value,
         rol: rol.value,
@@ -96,12 +101,13 @@ function enviarRegistro() {
         codi: codiProfe.value
     });
 
+    // Esperar respuesta
     socket.once('resultado-registre', (resultado) => {
 
         if (resultado.correcto) {
             router.push('/lobby');
         } else {
-            alert(resultado.mensaje);
+            alertaError(resultado.mensaje);
         }
 
     });
@@ -110,11 +116,9 @@ function enviarRegistro() {
 
 // Aturem la càmera quan sortim de la pàgina
 onBeforeUnmount(() => {
-
-    if (stream) {
-        stream.getTracks().forEach(track => track.stop());
+    if (dispositivos.camara) {
+        dispositivos.activarDesactivarCamara();
     }
-
 });
 
 </script>
@@ -208,19 +212,19 @@ onBeforeUnmount(() => {
                         <button
                             type="button"
                             @click="desactivar_ActivarMicro()"
-                            :class="micro ? 'activo' : 'desactivado'"
+                            :class="dispositivos.micro ? 'activo' : 'desactivado'"
                             class="boton-dispositivo"
                         >
-                            {{ micro ? '🎤 Micro activat' : '🔇 Micro desactivat' }}
+                            {{ dispositivos.micro ? '🎤 Micro activat' : '🔇 Micro desactivat' }}
                         </button>
 
                         <button
                             type="button"
                             @click="desactivar_ActivarCamara()"
-                            :class="camara ? 'activo' : 'desactivado'"
+                            :class="dispositivos.camara ? 'activo' : 'desactivado'"
                             class="boton-dispositivo"
                         >
-                            {{ camara ? '📷 Càmera activada' : '🚫 Càmera desactivada' }}
+                            {{ dispositivos.camara ? '📷 Càmera activada' : '🚫 Càmera desactivada' }}
                         </button>
 
                     </div>
@@ -239,10 +243,10 @@ onBeforeUnmount(() => {
                             autoplay
                             playsinline
                             muted
-                            v-show="camara"
+                            v-show="dispositivos.camara"
                         ></video>
 
-                        <div v-if="!camara" class="video-desactivat">
+                        <div v-if="!dispositivos.camara" class="video-desactivat">
                             <span>📷</span>
                             <p>La càmera està desactivada</p>
                         </div>
