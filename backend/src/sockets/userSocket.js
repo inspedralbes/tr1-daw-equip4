@@ -1,7 +1,8 @@
 import {
     registrarUsuario,
     eliminarUsuario,
-    obtenerUsuarios
+    obtenerUsuarios,
+    moureUsuario
 } from '../managers/userManager.js';
 
 export function configurarSockets(io) {
@@ -26,12 +27,25 @@ export function configurarSockets(io) {
 
         });
 
+        // El lobby pide la lista cuando se carga
+        socket.on('demanar-usuaris', () => {
+            socket.emit('llista-usuaris', obtenerUsuarios());
+        });
+
+        // Un usuario se ha movido: se avisa al resto
+        socket.on('moure', (dades) => {
+            const usuario = moureUsuario(socket.id, dades);
+            if (usuario) {
+                socket.broadcast.emit('usuari-mogut', usuario);
+            }
+        });
+
         // Desconectar usuario
         socket.on('disconnect', () => {
-        
-        eliminarUsuario(socket.id);
 
-        io.emit('llista-usuaris', obtenerUsuarios());
+            eliminarUsuario(socket.id);
+
+            io.emit('llista-usuaris', obtenerUsuarios());
 
             console.log('Usuario desconectado:', socket.id);
 

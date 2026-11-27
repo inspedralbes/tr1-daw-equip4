@@ -18,6 +18,10 @@ export function Personatge(escena, posicioHoritzontal, posicioVertical, textura)
         esquerra: Phaser.Input.Keyboard.KeyCodes.A,
         dreta: Phaser.Input.Keyboard.KeyCodes.D
     });
+
+    // Deixar que les tecles arribin també als inputs (xat)
+    escena.input.keyboard.clearCaptures();
+
     this.direccioActual = "avall";
     this.velocitat = 260;
     this.fotogramesAturats = {
@@ -56,6 +60,16 @@ Personatge.prototype.crearAnimacions = function () {
 
 // Mou el personatge i reprodueix l'animació de la direcció corresponent.
 Personatge.prototype.actualitzar = function () {
+
+    // Si estic escrivint al xat, el personatge no es mou
+    const escrivint = document.activeElement && document.activeElement.tagName === "INPUT";
+    if (escrivint) {
+        this.sprite.setVelocity(0, 0);
+        this.sprite.anims.stop();
+        this.sprite.setFrame(this.fotogramesAturats[this.direccioActual]);
+        return;
+    }
+
     const moviment = new Phaser.Math.Vector2(0, 0);
 
     if (this.tecles.left.isDown || this.teclesWASD.esquerra.isDown) moviment.x -= 1;
