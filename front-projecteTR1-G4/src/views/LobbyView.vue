@@ -1,6 +1,10 @@
 <script setup>
 import cmpPlazaCanvas from '@/components/cmpPlazaCanvas.vue';
 import cmpChatGeneral from '@/components/cmpChatGeneral.vue';
+
+function gestionarAccio(accio) {
+
+
 </script>
 
 <template>
@@ -8,7 +12,7 @@ import cmpChatGeneral from '@/components/cmpChatGeneral.vue';
         <h1>Pixel Plaza</h1>
 
         <div class="contingut">
-            <cmpPlazaCanvas />
+            <cmpPlazaCanvas @accio="gestionarAccio" />
             <cmpChatGeneral />
         </div>
     </main>
