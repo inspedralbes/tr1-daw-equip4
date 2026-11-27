@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeUnmount } from 'vue';
+import { ref, computed, watch, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { socket } from '@/services/socket';
 import Swal from 'sweetalert2';
@@ -12,15 +12,36 @@ const dispositivos = useDispositivosStore();
 let nombre = ref('');
 let rol = ref('');
 let avatar = ref('');
+let camara = ref(false);
+let micro = ref(true);
+let codiProfe = ref('');
+
 let video = ref(null);
 
 
-let avatars = [
+let avatarsAlumnes = [
     { nom: 'noi_pell_clara', imatge: '/avatars/noi_pell_clara.png' },
     { nom: 'noi_pell_fosca', imatge: '/avatars/noi_pell_fosca.png' },
     { nom: 'noia_pell_clara', imatge: '/avatars/noia_pell_clara.png' },
     { nom: 'noia_pell_fosca', imatge: '/avatars/noia_pell_fosca.png' }
 ];
+
+let avatarsProfes = [
+    { nom: 'profe_barba', imatge: '/avatars/profe_barba.png' },
+    { nom: 'profe_polo_blau', imatge: '/avatars/profe_polo_blau.png' },
+    { nom: 'profe_cabell_gris', imatge: '/avatars/profe_cabell_gris.png' }
+];
+
+let avatars = computed(() => {
+    if (rol.value === 'Profesor') return avatarsProfes;
+    if (rol.value === 'Alumno') return avatarsAlumnes;
+    return [];
+});
+
+watch(rol, () => {
+    avatar.value = '';
+    codiProfe.value = '';
+});
 
 // --------------- FUNCIONS --------------
 
@@ -57,18 +78,12 @@ function desactivar_ActivarMicro() {
 
 async function enviarRegistro() {
 
-    if (nombre.value.trim().length < 2) {
-        alertaError('El teu nom ha de tenir mínim 2 caràcters.');
+    if (nombre.value.trim() === '' || rol.value === '' || avatar.value === '') {
+        alert('Completa el nom, el rol i selecciona un avatar.');
         return;
     }
-
-    if (rol.value === '') {
-        alertaError('Selecciona el teu rol.');
-        return;
-    }
-
-    if (avatar.value === '') {
-        alertaError('Selecciona un avatar.');
+    if (rol.value === 'Profesor' && codiProfe.value.trim() === '') {
+        alert('Introdueix el codi de professor.');
         return;
     }
 
@@ -82,7 +97,8 @@ async function enviarRegistro() {
     socket.emit('registrar-usuari', {
         nombre: nombre.value,
         rol: rol.value,
-        avatar: avatar.value
+        avatar: avatar.value,
+        codi: codiProfe.value
     });
 
     // Esperar respuesta
@@ -149,6 +165,19 @@ onBeforeUnmount(() => {
 
                 </div>
 
+                <div class="camp" v-if="rol === 'Profesor'">
+
+                    <label for="codi">Codi de Professorat</label>
+                    
+                    <input
+                        type="password"
+                        placeholder="Introdueix el codi..."
+                        id="codi"
+                        v-model="codiProfe"
+                    >
+
+                </div>
+                
                 <!-- AVATARS -->
                 <div class="camp">
 

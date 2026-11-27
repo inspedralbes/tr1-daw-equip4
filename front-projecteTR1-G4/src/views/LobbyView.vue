@@ -1,6 +1,10 @@
 <script setup>
 import cmpPlazaCanvas from '@/components/cmpPlazaCanvas.vue';
 import cmpChatGeneral from '@/components/cmpChatGeneral.vue';
+
+function mostrarMissatge(accio) {
+    alert(accio === 'crear_sala' ? 'Crear sala' : 'Unir-se a una sala');
+}
 </script>
 
 <template>
@@ -8,7 +12,7 @@ import cmpChatGeneral from '@/components/cmpChatGeneral.vue';
         <h1>Pixel Plaza</h1>
 
         <div class="contingut">
-            <cmpPlazaCanvas />
+            <cmpPlazaCanvas @accio="mostrarMissatge" />
             <cmpChatGeneral />
         </div>
     </main>

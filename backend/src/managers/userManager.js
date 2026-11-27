@@ -6,7 +6,10 @@ export function registrarUsuario(datos, id) {
         'noi_pell_clara',
         'noi_pell_fosca',
         'noia_pell_clara',
-        'noia_pell_fosca'
+        'noia_pell_fosca',
+        'profe_barba',
+        'profe_cabell_gris',
+        'profe_polo_blau'
     ];
 
     // Validar datos

@@ -11,6 +11,8 @@ export function Personatge(escena, posicioHoritzontal, posicioVertical, textura)
         0
     );
     this.sprite.setScale(3);
+    this.sprite.body.setSize(16, 12);
+    this.sprite.body.setOffset(24, 46);
     this.tecles = escena.input.keyboard.createCursorKeys();
     this.teclesWASD = escena.input.keyboard.addKeys({
         amunt: Phaser.Input.Keyboard.KeyCodes.W,

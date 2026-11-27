@@ -14,6 +14,17 @@ export function configurarSockets(io) {
         // Registrar usuario
         socket.on('registrar-usuari', (datos) => {
 
+            const CODI_PROFE = process.env.CODI_PROFE || 'pedralbes2026';
+
+            // Si es profesor, comprobar el código
+            if (datos.rol === 'Profesor' && datos.codi !== CODI_PROFE) {
+                socket.emit('resultado-registre', {
+                    correcto: false,
+                    mensaje: 'Codi de professor incorrecte'
+                });
+                return;
+            }
+
             const resultado = registrarUsuario(datos, socket.id);
             console.log(resultado);
 
