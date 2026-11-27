@@ -1,6 +1,17 @@
 <script setup>
 import cmpPlazaCanvas from '@/components/cmpPlazaCanvas.vue';
 import cmpChatGeneral from '@/components/cmpChatGeneral.vue';
+
+
+
+/* Falta conectar amb el backend
+
+function gestionarAccio(accio) {
+    if (accio === "crear_sala") {
+    } else if (accio === "unirse_sala") {
+    }
+}*/
+
 </script>
 
 <template>
@@ -8,7 +19,7 @@ import cmpChatGeneral from '@/components/cmpChatGeneral.vue';
         <h1>Pixel Plaza</h1>
 
         <div class="contingut">
-            <cmpPlazaCanvas />
+            <cmpPlazaCanvas @accio="gestionarAccio" />
             <cmpChatGeneral />
         </div>
     </main>

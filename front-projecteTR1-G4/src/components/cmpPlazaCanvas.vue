@@ -4,6 +4,7 @@ import Phaser from "phaser";
 import { Personatge } from "../phaser/Personatge.js";
 
 const contenidorJoc = ref(null);
+const emit = defineEmits(["accio"]);
 let jocPhaser = null;
 
 // Crea el joc quan Vue ja ha afegit el contenidor al DOM.
@@ -77,6 +78,25 @@ onMounted(function muntarJoc() {
                     "chicoClaro"
                 );
                 this.physics.add.collider(this.personatge.sprite, capaParedes);
+
+                const objectes = mapaSala.getObjectLayer("Interacciones").objects;
+                const escena = this;
+
+                objectes.forEach(function (objecte) {
+                    if (objecte.name !== "crear_sala" && objecte.name !== "unirse_sala") return;
+
+                    const zona = escena.add.zone(
+                        objecte.x + objecte.width / 2,
+                        objecte.y + objecte.height / 2,
+                        objecte.width,
+                        objecte.height
+                    );
+
+                    zona.setInteractive();
+                    zona.on("pointerdown", function () {
+                        emit("accio", objecte.name);
+                    });
+                });
             },
             // Phaser actualitza el moviment i la direcció del personatge cada fotograma.
             update: function actualitzarEscena() {
