@@ -4,6 +4,7 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import { configurarSockets } from './sockets/userSocket.js';
 import { configurarChat } from './sockets/chatSocket.js';
+import { configurarTrucada } from './sockets/trucadaSocket.js';
 
 const origen = process.env.CLIENT_URL || 'http://localhost:5173';
 
@@ -30,6 +31,7 @@ const io = new Server(servidor, {
 
 configurarSockets(io);
 configurarChat(io);
+configurarTrucada(io);
 
 // Comprobar que el backend funciona
 app.get('/health', (req, res) => {
