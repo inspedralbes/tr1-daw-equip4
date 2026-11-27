@@ -5,12 +5,14 @@ import cors from 'cors';
 import { configurarSockets } from './sockets/userSocket.js';
 import { configurarChat } from './sockets/chatSocket.js';
 
+const origen = process.env.CLIENT_URL || 'http://localhost:5173';
+
+
 // Crear servidor Express
 const app = express();
 
-// Permitir peticiones desde Vue
 app.use(cors({
-    origin: 'http://localhost:5173'
+    origin: origen
 }));
 
 app.use(express.json());
@@ -21,7 +23,7 @@ const servidor = createServer(app);
 // Crear servidor Socket.IO
 const io = new Server(servidor, {
     cors: {
-        origin: 'http://localhost:5173',
+        origin: origen,
         methods: ['GET', 'POST']
     }
 });
@@ -49,6 +51,6 @@ io.on('connection', (socket) => {
 // Iniciar servidor
 const PORT = process.env.PORT || 3000;
 
-servidor.listen(PORT, () => {
-    console.log(`Backend Pixel Plaza funcionando en http://localhost:${PORT}`);
+servidor.listen(PORT, '0.0.0.0', () => {
+    console.log(`Backend Pixel Plaza funcionando en el puerto ${PORT}`);
 });

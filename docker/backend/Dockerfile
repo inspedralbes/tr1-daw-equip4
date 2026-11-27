@@ -2,11 +2,11 @@ FROM node:20
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY backend/package*.json ./
 
-RUN npm install --omit=dev
+RUN npm ci --omit=dev
 
-COPY src ./src
+COPY backend/src ./src
 
 EXPOSE 3000
 
