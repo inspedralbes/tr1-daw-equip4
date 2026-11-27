@@ -13,6 +13,7 @@ function enviarMissatge() {
     if (texto.value.trim() === '') return;
     socket.emit('enviar-missatge', texto.value);
     texto.value = '';
+    document.activeElement.blur();
 }
 
 onMounted(() => {

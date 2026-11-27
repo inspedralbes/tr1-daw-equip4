@@ -21,6 +21,8 @@ export function Personatge(escena, posicioHoritzontal, posicioVertical, textura)
 
     // Deixar que les tecles arribin també als inputs (xat)
     escena.input.keyboard.clearCaptures();
+    // Les fletxes no fan scroll a la pàgina
+    escena.input.keyboard.addCapture('UP,DOWN,LEFT,RIGHT');
 
     this.direccioActual = "avall";
     this.velocitat = 260;
